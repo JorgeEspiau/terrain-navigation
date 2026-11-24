@@ -33,15 +33,6 @@ data/bags/*
 data/datasets/*
 !data/datasets/.gitkeep
 
-maps/dem/*
-!maps/dem/.gitkeep
-
-maps/orthophotos/*
-!maps/orthophotos/.gitkeep
-
-maps/pointclouds/*
-!maps/pointclouds/.gitkeep
-
 # Generated results
 results/trajectories/*
 !results/trajectories/.gitkeep

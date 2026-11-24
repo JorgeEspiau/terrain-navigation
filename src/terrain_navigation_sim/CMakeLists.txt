@@ -7,6 +7,20 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+
+install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
+install(FILES
+  ../project_gazebo/config/world.yaml
+  ../project_gazebo/config/world_swarm.yaml
+  ../project_gazebo/config/config.yaml
+  ../project_gazebo/config/ground_truth_fortress.yaml
+  ../project_gazebo/config/pid_speed_controller.yaml
+  ../project_gazebo/config/pid_speed_controller_humble.yaml
+  DESTINATION share/${PROJECT_NAME}/config
+)
+install(PROGRAMS ../project_gazebo/utils/keyboard_teleoperation.py
+  DESTINATION lib/${PROJECT_NAME}
+)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)

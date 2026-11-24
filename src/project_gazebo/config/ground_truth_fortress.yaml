@@ -1,0 +1,5 @@
+/**:
+  ros__parameters:
+    # Attach the estimator to the Gazebo model frame. Gazebo already publishes
+    # the transform from the model frame to its base_link.
+    use_gazebo_tf: true

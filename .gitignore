@@ -1,0 +1,67 @@
+
+# ROS 2 / Colcon
+build/
+install/
+log/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDEs
+.idea/
+.vscode/
+
+# ROS bags
+*.db3
+*.mcap
+*.bag
+
+# Large datasets
+data/bags/*
+!data/bags/.gitkeep
+
+data/datasets/*
+!data/datasets/.gitkeep
+
+maps/dem/*
+!maps/dem/.gitkeep
+
+maps/orthophotos/*
+!maps/orthophotos/.gitkeep
+
+maps/pointclouds/*
+!maps/pointclouds/.gitkeep
+
+# Generated results
+results/trajectories/*
+!results/trajectories/.gitkeep
+
+results/metrics/*
+!results/metrics/.gitkeep
+
+results/reconstructions/*
+!results/reconstructions/.gitkeep
+
+# Gaussian Splatting
+*.ply
+*.splat
+*.ckpt
+*.pth
+*.pt
+*.tar
+
+# Temporary files
+*.tmp
+*.log
+.DS_Store
+Thumbs.db

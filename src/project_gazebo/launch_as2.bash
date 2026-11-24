@@ -6,6 +6,9 @@ usage() {
     echo "      -n: select drones namespace to launch, values are comma separated. By default, it will get all drones from world description file"
     echo "      -s: if set, the simulation will not be launched. Default launch simulation"
     echo "      -g: launch using gnome-terminal instead of tmux. Default not set"
+    echo "      -t, --teleop: open keyboard teleoperation for the selected drones"
+    echo "      --no-teleop: start without keyboard teleoperation (default)"
+    echo "      -h, --help: show this help"
 }
 
 # Initialize variables with default values
@@ -13,10 +16,15 @@ swarm="false"
 drones_namespace_comma=""
 launch_simulation="true"
 use_gnome="false"
+keyboard_teleop="false"
 
 # Arg parser
-while getopts "mn:sg" opt; do
+while getopts ":hmn:sgt-:" opt; do
   case ${opt} in
+    h )
+      usage
+      exit 0
+      ;;
     m )
       swarm="true"
       ;;
@@ -29,20 +37,39 @@ while getopts "mn:sg" opt; do
     g )
       use_gnome="true"
       ;;
+    t )
+      keyboard_teleop="true"
+      ;;
+    - )
+      case ${OPTARG} in
+        teleop ) keyboard_teleop="true" ;;
+        no-teleop ) keyboard_teleop="false" ;;
+        help ) usage; exit 0 ;;
+        * )
+          echo "Invalid option: --$OPTARG" >&2
+          usage
+          exit 1
+          ;;
+      esac
+      ;;
     \? )
       echo "Invalid option: -$OPTARG" >&2
       usage
       exit 1
       ;;
     : )
-      if [[ ! $OPTARG =~ ^[wrt]$ ]]; then
-        echo "Option -$OPTARG requires an argument" >&2
-        usage
-        exit 1
-      fi
+      echo "Option -$OPTARG requires an argument" >&2
+      usage
+      exit 1
       ;;
   esac
 done
+shift "$((OPTIND - 1))"
+if (( $# )); then
+  echo "Unexpected argument: $1" >&2
+  usage
+  exit 1
+fi
 
 # Set simulation world description config file
 if [[ ${swarm} == "true" ]]; then
@@ -67,15 +94,21 @@ if [[ ${use_gnome} == "true" ]]; then
 fi
 
 # Launch aerostack2 for each drone namespace
-for namespace in ${drone_namespaces[@]}; do
+for index in "${!drone_namespaces[@]}"; do
+  namespace="${drone_namespaces[index]}"
   base_launch="false"
-  if [[ ${namespace} == ${drone_namespaces[0]} && ${launch_simulation} == "true" ]]; then
-    base_launch="true"
+  teleop_namespaces=""
+  if (( index == 0 )); then
+    base_launch="${launch_simulation}"
+    if [[ ${keyboard_teleop} == "true" ]]; then
+      teleop_namespaces="${drones_namespace_comma}"
+    fi
   fi
   eval "tmuxinator ${tmuxinator_mode} -n ${namespace} -p tmuxinator/aerostack2.yaml \
     drone_namespace=${namespace} \
     simulation_config_file=${simulation_config} \
     base_launch=${base_launch} \
+    teleop_namespaces=${teleop_namespaces} \
     ${tmuxinator_end}"
 
   sleep 0.1 # Wait for tmuxinator to finish

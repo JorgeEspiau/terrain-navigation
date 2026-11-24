@@ -127,10 +127,24 @@ To launch aerostack2 nodes for each drone, execute once the following command:
 
 The flags for the components launcher are:
 
+- **-t**, **--teleop**: start keyboard teleoperation in the same launch.
+- **--no-teleop**: start without keyboard teleoperation (default).
 - **-m**: multi agent. Default not set
 - **-n**: select drones namespace to launch, values are comma separated. By default, it will get all drones from world description file
 - **-s**: if set, the simulation will not be launched. Default launch simulation
 - **-g**: launch using gnome-terminal instead of tmux. Default not set
+
+Para arrancar Gazebo y controlar `drone0` con el teclado en un solo paso:
+
+```bash
+./launch_as2.bash -n drone0 --teleop
+```
+
+Para arrancar el mismo simulador sin abrir la ventana de teclado:
+
+```bash
+./launch_as2.bash -n drone0 --no-teleop
+```
 
 ### 2. Launch aerostack2 nodes for the ground station
 To launch aerostack2 nodes for the ground station, execute once the following command:

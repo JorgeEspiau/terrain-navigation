@@ -96,6 +96,23 @@ Source the workspace:
 source install/setup.bash
 ```
 
+## Gazebo simulation
+
+With the ROS 2 workspace sourced, launch Gazebo and the Aerostack2 flight stack:
+
+```bash
+ros2 launch terrain_navigation_sim simulation.launch.py teleop:=false
+```
+
+To open the keyboard teleoperation window alongside Gazebo:
+
+```bash
+ros2 launch terrain_navigation_sim simulation.launch.py teleop:=true
+```
+
+Teleoperation defaults to off. Pass `gui:=false` to run the Gazebo server
+without its client.
+
 ## Status
 
 Project structure initialized.
